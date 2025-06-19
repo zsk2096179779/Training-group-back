@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/Training-group.iml" filepath="$PROJECT_DIR$/Training-group.iml" />
+      <module fileurl="file://$PROJECT_DIR$/advisor-backend.iml" filepath="$PROJECT_DIR$/advisor-backend.iml" />
     </modules>
   </component>
 </project>
