@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.advisor_backend.mapper.FactorTreeNodeMapper">
+
+    <resultMap id="BaseResultMap" type="com.example.advisor_backend.model.dto.entity.FactorTreeNode">
+        <id property="id" column="id" />
+        <result property="name" column="name" />
+        <result property="parentId" column="parent_id" />
+        <result property="treeType" column="tree_type" />
+        <result property="sortOrder" column="sort_order" />
+        <result property="createTime" column="create_time" />
+        <result property="updateTime" column="update_time" />
+    </resultMap>
+
+    <select id="selectAll" resultMap="BaseResultMap">
+        SELECT * FROM factor_tree_node ORDER BY sort_order ASC
+    </select>
+
+    <select id="selectByParentId" parameterType="long" resultMap="BaseResultMap">
+        SELECT * FROM factor_tree_node WHERE parent_id = #{parentId} ORDER BY sort_order ASC
+    </select>
+
+    <select id="selectById" parameterType="long" resultMap="BaseResultMap">
+        SELECT * FROM factor_tree_node WHERE id = #{id}
+    </select>
+
+    <insert id="insert" parameterType="com.example.advisor_backend.model.dto.entity.FactorTreeNode" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO factor_tree_node(name, parent_id, tree_type, sort_order, create_time, update_time)
+        VALUES (#{name}, #{parentId}, #{treeType}, #{sortOrder}, NOW(), NOW())
+    </insert>
+
+    <update id="update" parameterType="com.example.advisor_backend.model.dto.entity.FactorTreeNode">
+        UPDATE factor_tree_node
+        SET name = #{name},
+            parent_id = #{parentId},
+            tree_type = #{treeType},
+            sort_order = #{sortOrder},
+            update_time = NOW()
+        WHERE id = #{id}
+    </update>
+
+    <delete id="deleteById" parameterType="long">
+        DELETE FROM factor_tree_node WHERE id = #{id}
+    </delete>
+
+    <update id="updateNodeParentAndSortOrder">
+        UPDATE factor_tree_node
+        SET parent_id = #{newParentId},
+            sort_order = #{newSortOrder},
+            update_time = NOW()
+        WHERE id = #{id}
+    </update>
+
+    <update id="updateSortOrderBatch">
+        <foreach collection="list" item="node" separator=";">
+            UPDATE factor_tree_node
+            SET sort_order = #{node.sortOrder},
+                update_time = NOW()
+            WHERE id = #{node.id}
+        </foreach>
+    </update>
+
+</mapper>
