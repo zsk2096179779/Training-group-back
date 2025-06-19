@@ -51,11 +51,18 @@
 			<scope>runtime</scope>
 		</dependency>
 
+
 		<!-- JWT -->
 		<dependency>
 			<groupId>io.jsonwebtoken</groupId>
 			<artifactId>jjwt</artifactId>
 			<version>0.9.1</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.mybatis.spring.boot</groupId>
+			<artifactId>mybatis-spring-boot-starter</artifactId>
+			<version>3.0.3</version> <!-- 与Spring Boot 3.1.3兼容[4,7](@ref) -->
 		</dependency>
 
 		<!-- Lombok（可选） -->
@@ -76,6 +83,7 @@
 			<artifactId>spring-security-test</artifactId>
 			<scope>test</scope>
 		</dependency>
+
 	</dependencies>
 
 	<build>
