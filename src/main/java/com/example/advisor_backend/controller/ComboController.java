@@ -14,7 +14,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
-@CrossOrigin(origins = "http://localhost:5173")
+//允许跨域，后续更改前端api
+@CrossOrigin(origins = "http://localhost:5176")
 @RestController
 @RequestMapping("/combos")
 @Slf4j
@@ -24,8 +25,8 @@ public class ComboController {
     @GetMapping
     public ApiResponse<List<Combo>> getAllCombos() {
         log.info("查询全部基金组合数据");
-        List<Combo> productList = comboService.list();
-        return ApiResponse.ok(productList);
+        List<Combo> combosList = comboService.list();
+        return ApiResponse.ok(combosList);
     }
 
 }

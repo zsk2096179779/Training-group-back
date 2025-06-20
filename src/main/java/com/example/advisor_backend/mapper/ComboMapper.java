@@ -9,6 +9,6 @@ import java.util.List;
 @Mapper
 public interface ComboMapper {
     // 查询产品（含关联基金）
-    @Select("SELECT * FROM products")
+    @Select("SELECT * FROM combos")
     List<Combo> list();
 }
