@@ -59,10 +59,15 @@
 			<version>0.9.1</version>
 		</dependency>
 
+<!--		<dependency>-->
+<!--			<groupId>org.mybatis.spring.boot</groupId>-->
+<!--			<artifactId>mybatis-spring-boot-starter</artifactId>-->
+<!--			<version>3.0.3</version> &lt;!&ndash; 与Spring Boot 3.1.3兼容[4,7](@ref) &ndash;&gt;-->
+<!--		</dependency>-->
 		<dependency>
-			<groupId>org.mybatis.spring.boot</groupId>
-			<artifactId>mybatis-spring-boot-starter</artifactId>
-			<version>3.0.3</version> <!-- 与Spring Boot 3.1.3兼容[4,7](@ref) -->
+			<groupId>com.baomidou</groupId>
+			<artifactId>mybatis-plus-boot-starter</artifactId>
+			<version>3.5.5</version>
 		</dependency>
 
 		<!-- Lombok（可选） -->

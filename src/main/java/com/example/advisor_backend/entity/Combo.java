@@ -25,7 +25,7 @@ public class Combo {
     private BigDecimal annualizedReturn;
     private BigDecimal maxDrawdown;
     private Integer minimumInvestment;
-    private LocalDateTime createTime;
-    private LocalDateTime updateTime;
+    private LocalDateTime createdTime;
+    private LocalDateTime updatedTime;
     private List<Fund> funds; // 多对多关联基金
 }

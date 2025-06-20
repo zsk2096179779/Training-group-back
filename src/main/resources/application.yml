@@ -1,7 +1,13 @@
 server:
   port: 8080
 
+
+mybatis-plus:
+  configuration:
+    map-underscore-to-camel-case: true
+
 spring:
+
   datasource:
     url: jdbc:mysql://localhost:3306/fund_db
     username: root       # 请改为你的用户名

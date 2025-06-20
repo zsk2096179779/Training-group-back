@@ -15,6 +15,6 @@ public class Fund {
     private String fundCode; // 主键：基金代码
     private String fundName;
     private String category;
-    private LocalDateTime createTime;
-    private LocalDateTime updateTime;
+    private LocalDateTime createdTime;
+    private LocalDateTime updatedTime;
 }
