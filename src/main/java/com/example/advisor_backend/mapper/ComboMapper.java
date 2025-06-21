@@ -1,14 +1,18 @@
 package com.example.advisor_backend.mapper;
 
 import com.example.advisor_backend.entity.Combo;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Select;
+import com.example.advisor_backend.entity.Fund;
+import org.apache.ibatis.annotations.*;
 
 import java.util.List;
 
 @Mapper
 public interface ComboMapper {
-    // 查询产品（含关联基金）
-    @Select("SELECT * FROM combos")
+//    @Select("SELECT * FROM combos")
     List<Combo> list();
+//    @Select("SELECT fund_code FROM combo_funds WHERE combo_id = #{id}")
+    List<Integer> getFundId(Long id);
+
+    List<Fund> getFunds(@Param("ids") List<Integer> ids); // 显式命名参数为 "ids"
+//    多表查询
 }

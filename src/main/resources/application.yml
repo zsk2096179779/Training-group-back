@@ -5,7 +5,7 @@ server:
 mybatis-plus:
   configuration:
     map-underscore-to-camel-case: true
-
+  type-aliases-package: com.example.advisor_backend.entity      # 实体类包别名，简化XML中的resultType
 spring:
 
   datasource:

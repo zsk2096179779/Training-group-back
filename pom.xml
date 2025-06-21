@@ -113,7 +113,11 @@
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
 		</plugins>
+
+
+
 	</build>
+
 
 	<!-- 移除 snapshot 仓库配置，Maven 默认 central 就能拉正式版 -->
 </project>
