@@ -35,8 +35,9 @@ public class GlobalExceptionHandler {
     // 处理其他未捕获的异常
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ApiResponse<?>> handleOther(Exception ex) {
-        // 日志里可以记录 ex, 这里返回通用失败
-        ApiResponse<?> body = ApiResponse.error(500, "服务器内部错误");
+        // 打印详细错误信息到控制台，便于调试
+        ex.printStackTrace();
+        ApiResponse<?> body = ApiResponse.error(500, "服务器内部错误: " + ex.getMessage());
         return ResponseEntity.status(500).body(body);
     }
 }

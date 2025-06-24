@@ -6,4 +6,9 @@
         INSERT INTO derived_factor_relation(derived_factor_id, base_factor_id, weight)
         VALUES (#{derivedId}, #{baseId}, #{weight})
     </insert>
+
+    <insert id="insert" parameterType="com.example.advisor_backend.model.dto.entity.FactorDerivation">
+        INSERT INTO derived_factor_relation(derived_factor_id, base_factor_id, weight)
+        VALUES (#{factorId}, #{baseFactorId}, #{weight})
+    </insert>
 </mapper> 

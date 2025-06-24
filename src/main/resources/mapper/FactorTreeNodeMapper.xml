@@ -12,8 +12,11 @@
         <result property="sortOrder" column="sort_order" />
         <result property="createTime" column="create_time" />
         <result property="updateTime" column="update_time" />
+        <result property="treeName" column="tree_name" />
     </resultMap>
-
+        <select id="selectChildrenIds" resultType="java.lang.Long">
+            SELECT id FROM factor_tree_node WHERE parent_id = #{parentId}
+        </select>
     <select id="selectAll" resultMap="BaseResultMap">
         SELECT * FROM factor_tree_node ORDER BY sort_order ASC
     </select>
@@ -25,18 +28,38 @@
     <select id="selectById" parameterType="long" resultMap="BaseResultMap">
         SELECT * FROM factor_tree_node WHERE id = #{id}
     </select>
-
+    <select id="selectByTreeType" parameterType="java.lang.String" resultMap="BaseResultMap">
+        SELECT * FROM factor_tree_node WHERE tree_type = #{treeType}
+    </select>
     <insert id="insert" parameterType="com.example.advisor_backend.model.dto.entity.FactorTreeNode" useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO factor_tree_node(name, parent_id, tree_type, sort_order, create_time, update_time)
-        VALUES (#{name}, #{parentId}, #{treeType}, #{sortOrder}, NOW(), NOW())
+        INSERT INTO factor_tree_node(name, parent_id, tree_type, sort_order, create_time, update_time, tree_name)
+        VALUES (#{name}, #{parentId}, #{treeType}, #{sortOrder}, NOW(), NOW(), #{treeName})
     </insert>
+    <update id="updateParentAndOrder">
+        UPDATE factor_tree_node
+        SET parent_id = #{parentId},
+            sort_order = #{sortOrder}
+        WHERE id = #{id}
+    </update>
 
+    <!-- 2. 重新排序同一父节点下所有子节点，sort_order 连续递增 -->
+    <update id="reorderSiblings">
+        UPDATE factor_tree_node t
+            JOIN (
+            SELECT id, (@rownum := @rownum + 1) AS new_order
+            FROM factor_tree_node, (SELECT @rownum := 0) r
+            WHERE parent_id = #{parentId}
+            ORDER BY sort_order, id
+            ) s ON t.id = s.id
+            SET t.sort_order = s.new_order;
+    </update>
     <update id="update" parameterType="com.example.advisor_backend.model.dto.entity.FactorTreeNode">
         UPDATE factor_tree_node
         SET name = #{name},
             parent_id = #{parentId},
             tree_type = #{treeType},
             sort_order = #{sortOrder},
+            tree_name = #{treeName},
             update_time = NOW()
         WHERE id = #{id}
     </update>
@@ -61,5 +84,22 @@
             WHERE id = #{node.id}
         </foreach>
     </update>
+
+    <update id="renameTreeType">
+        UPDATE factor_tree_node SET tree_type = #{newName} WHERE tree_type = #{treeType}
+    </update>
+    <delete id="deleteByTreeType">
+        DELETE FROM factor_tree_node WHERE tree_type = #{treeType}
+    </delete>
+
+    <update id="renameTreeName">
+        UPDATE factor_tree_node
+        SET tree_name = #{newTreeName}
+        WHERE tree_type = #{treeType} AND tree_name = #{treeName}
+    </update>
+    <delete id="deleteByTreeTypeAndTreeName">
+        DELETE FROM factor_tree_node
+        WHERE tree_type = #{treeType} AND tree_name = #{treeName}
+    </delete>
 
 </mapper>
