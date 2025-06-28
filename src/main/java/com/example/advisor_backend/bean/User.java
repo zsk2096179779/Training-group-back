@@ -1,8 +1,29 @@
 package com.example.advisor_backend.bean;
+
+import jakarta.persistence.*;
+import lombok.Data;
+
+import java.io.Serial;
+import java.io.Serializable;
+
 //用户实例
-public class User {
+@Entity
+@Data
+@Table(name = "users")
+public class User{
+    @Id
+    @Column(name="id")
     private int id;//用户id
+    @Column(name="name")
     private String name;//用户名
+
+    public User() {
+    }
+
+    public User(int id, String name) {
+        this.id = id;
+        this.name = name;
+    }
 
     public int getId() {
         return id;

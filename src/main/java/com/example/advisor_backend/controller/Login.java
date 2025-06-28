@@ -1,8 +1,6 @@
 package com.example.advisor_backend.controller;
 
 import com.example.advisor_backend.Server.UserServe;
-import com.example.advisor_backend.Server.UsersStrategy;
-import com.example.advisor_backend.bean.Strategy;
 import com.example.advisor_backend.bean.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -11,17 +9,14 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 @RestController
-public class Strategy_Manage {
+public class Login {
     @Autowired
     private UserServe userServe;
-    @Autowired
-    private UsersStrategy strategyService;
 
-    @PostMapping("/strategy_manage")
+    @PostMapping("/test")
     public ResponseEntity<?> CheckUser(@RequestBody User user) {
         String username = user.getName();
         if (username == null || username.trim().isEmpty()) {
@@ -33,16 +28,11 @@ public class Strategy_Manage {
         if (user == null) {
             return ResponseEntity.status(404).body("用户不存在");
         }
-        try {
-            // 3. 查询该用户的策略列表
-            List<Strategy> strategies = strategyService.getStrategiesByUser(user);
+        // 返回简单的成功响应（包含用户ID）
+        Map<String, Object> response = new HashMap<>();
+        response.put("success", true);
+        response.put("username", user.getName());
 
-            // 4. 返回策略列表给前端
-            return ResponseEntity.ok(strategies);
-
-        } catch (Exception e) {
-            // 5. 处理异常情况
-            return ResponseEntity.internalServerError().body("Failed to retrieve strategies: " + e.getMessage());
-        }
+        return ResponseEntity.ok(response);
     }
 }
