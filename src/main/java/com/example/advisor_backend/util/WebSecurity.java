@@ -22,12 +22,10 @@ public class WebSecurity {
             "/v3/api-docs/**",
             "/favicon.ico",
             "/error",
-            "/strategy_manage/**",
-            "/api/test",
+            "/strategy-management/**",
+            "/strategy-management",
             "/test",
             "/test/**",
-            "/api/test/*",
-            "/api/test/**",
             "api/**"
     };
 

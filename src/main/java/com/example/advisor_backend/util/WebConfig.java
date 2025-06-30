@@ -16,8 +16,7 @@ public class WebConfig {
 
         // 允许的源（前端地址）
         config.setAllowedOrigins(List.of(
-                "http://localhost:8080",    // 开发环境
-                "https://your-production-domain.com" // 生产环境
+                "http://localhost:8080"  // 开发环境
         ));
 
         // 允许的方法

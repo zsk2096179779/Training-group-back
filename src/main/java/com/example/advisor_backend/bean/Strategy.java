@@ -32,6 +32,9 @@ public class Strategy {
     @Column(name = "owner")
     private Integer owner;
 
+    @Column(name ="gain")
+    private Double gain;
+
     // 枚举类型定义策略状态
     public enum Status {
         active,     // 生效中
@@ -39,17 +42,19 @@ public class Strategy {
         warn     // 有风险
     }
 
-    // 构造函数
     public Strategy() {
     }
 
-    public Strategy(String name, int type, int owner) {
+    public Strategy(Long id, String name, int type, Status status, LocalDateTime createTime, Integer owner, Double gain) {
+        this.id = id;
         this.name = name;
         this.type = type;
+        this.status = status;
+        this.createTime = createTime;
         this.owner = owner;
+        this.gain = gain;
     }
 
-    // Getters and Setters
     public Long getId() {
         return id;
     }
@@ -90,23 +95,32 @@ public class Strategy {
         this.createTime = createTime;
     }
 
-    public int getOwner() {
+    public Integer getOwner() {
         return owner;
     }
 
-    public void setOwner(int owner) {
+    public void setOwner(Integer owner) {
         this.owner = owner;
     }
 
-    // 建议重写toString()方法
+    public Double getGain() {
+        return gain;
+    }
+
+    public void setGain(Double gain) {
+        this.gain = gain;
+    }
+
     @Override
     public String toString() {
         return "Strategy{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
-                ", type='" + type + '\'' +
+                ", type=" + type +
                 ", status=" + status +
                 ", createTime=" + createTime +
+                ", owner=" + owner +
+                ", gain=" + gain +
                 '}';
     }
 }

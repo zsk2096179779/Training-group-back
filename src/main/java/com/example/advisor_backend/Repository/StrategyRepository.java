@@ -9,4 +9,7 @@ public interface StrategyRepository extends JpaRepository<Strategy, Integer> {
 
     // 通过owner字段查询策略
     List<Strategy> findByOwner(Integer ownerId);
+    //通过Id查询
+    Strategy findByid(Integer strategyId);
+
 }
