@@ -11,5 +11,4 @@ public interface StrategyRepository extends JpaRepository<Strategy, Integer> {
     List<Strategy> findByOwner(Integer ownerId);
     //通过Id查询
     Strategy findByid(Integer strategyId);
-
 }

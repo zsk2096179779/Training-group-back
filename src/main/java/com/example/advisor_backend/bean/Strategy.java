@@ -14,7 +14,7 @@ public class Strategy {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Integer id;
 
     @Column(name = "name", nullable = false, length = 255)
     private String name;
@@ -24,7 +24,7 @@ public class Strategy {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "status", nullable = false, length = 20)
-    private Status status = Status.active;
+    private Status status = Status.stop;
 
     @Column(name = "create_time", nullable = false, updatable = false)
     private LocalDateTime createTime = LocalDateTime.now();
@@ -45,7 +45,14 @@ public class Strategy {
     public Strategy() {
     }
 
-    public Strategy(Long id, String name, int type, Status status, LocalDateTime createTime, Integer owner, Double gain) {
+    public Strategy(String name, int type) {
+        this.name = name;
+        this.type = type;
+        this.status=Status.stop;
+        this.owner=1;
+    }
+
+    public Strategy(Integer id, String name, int type, Status status, LocalDateTime createTime, Integer owner, Double gain) {
         this.id = id;
         this.name = name;
         this.type = type;
@@ -55,11 +62,11 @@ public class Strategy {
         this.gain = gain;
     }
 
-    public Long getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

@@ -2,6 +2,7 @@ package com.example.advisor_backend.controller;
 
 import com.example.advisor_backend.Server.UserServe;
 import com.example.advisor_backend.Server.UsersStrategy;
+import com.example.advisor_backend.bean.Holding;
 import com.example.advisor_backend.bean.Strategy;
 import com.example.advisor_backend.bean.User;
 import com.example.advisor_backend.exception.BusinessException;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -132,6 +134,33 @@ public class Strategy_Manage {
                             "success", false,
                             "message", "删除策略失败: " + e.getMessage()
                     ));
+        }
+    }
+    @PostMapping("/strategy-management/new")
+    public ResponseEntity<?> createStrategy(@RequestBody User user)
+    {
+        try {
+            // 验证输入
+            if (user.getName() == null || user.getName().isEmpty()) {
+                return ResponseEntity.badRequest().body(Collections.singletonMap("error", "策略名称不能为空"));
+            }
+            if (user.getId()>=4 || user.getId()<=1) {
+                return ResponseEntity.badRequest().body(Collections.singletonMap("error", "策略类型不能为空"));
+            }
+            Strategy createdStrategy = strategyService.createStrategy(user);
+            // 返回创建成功的响应
+            Map<String, Object> response = new HashMap<>();
+            response.put("success", true);
+            response.put("message", "策略创建成功");
+            response.put("strategyId", createdStrategy.getId());
+            response.put("strategyName", createdStrategy.getName());
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            Map<String, Object> errorResponse = new HashMap<>();
+            errorResponse.put("success", false);
+            errorResponse.put("message", "创建策略失败: " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(errorResponse);
         }
     }
 }

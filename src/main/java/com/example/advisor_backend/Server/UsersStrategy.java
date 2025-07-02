@@ -55,4 +55,9 @@ public class UsersStrategy {
         }
         strategyRepository.deleteById(strategyId);
     }
+    @Transactional
+    public Strategy createStrategy(User request) {
+        Strategy strategy = new Strategy(request.getName(), request.getId());
+        return strategyRepository.save(strategy);
+    }
 }
