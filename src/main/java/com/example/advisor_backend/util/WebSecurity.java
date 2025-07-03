@@ -24,6 +24,8 @@ public class WebSecurity {
             "/error",
             "/strategy-management/**",
             "/strategy-management",
+            "/strategy-monitoring/**",
+            "/strategy-monitoring",
             "/test",
             "/test/**",
             "api/**"
