@@ -38,9 +38,9 @@ public class GlobalExceptionHandler {
     // 处理其他未捕获的异常
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ApiResponse<?>> handleOther(Exception ex) {
-        log.error("Unhandled exception", ex);
-        return ResponseEntity
-                .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body(ApiResponse.error(9999, ex.getMessage()));
+        // 打印详细错误信息到控制台，便于调试
+        ex.printStackTrace();
+        ApiResponse<?> body = ApiResponse.error(500, "服务器内部错误: " + ex.getMessage());
+        return ResponseEntity.status(500).body(body);
     }
 }

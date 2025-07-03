@@ -7,21 +7,25 @@ import com.example.advisor_backend.service.CustomUserDetailsService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
-import org.springframework.security.config.Customizer;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
+import java.util.Arrays;
 import java.util.List;
 
 @Configuration
+@EnableMethodSecurity
 public class SecurityConfig {
 
     private final JwtTokenProvider tokenProvider;
@@ -33,63 +37,90 @@ public class SecurityConfig {
         this.userDetailsService = userDetailsService;
     }
 
-    @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        JwtAuthenticationFilter jwtFilter =
-                new JwtAuthenticationFilter(tokenProvider, userDetailsService);
-
-        http
-                // 允许跨域（开发时 5173 调试用）
-                .cors(Customizer.withDefaults())
-                // 关闭 CSRF
-                .csrf(AbstractHttpConfigurer::disable)
-                // 不建立 HTTP Session
-                .sessionManagement(sm -> sm
-                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                // 授权规则
-                .authorizeHttpRequests(auth -> auth
-                        // 注册、登录 接口放行
-                        .requestMatchers("/api/auth/**").permitAll()
-
-                        // 公共查询接口：标签、基金列表 → 放行给所有请求（或可改为 authenticated()）
-                        .requestMatchers(HttpMethod.GET, "/api/funds/labels").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/api/funds").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/api/funds/*/profile").permitAll()
-
-                        // 保存组合接口：需登录
-                        .requestMatchers(HttpMethod.POST, "/api/funds/portfolios").authenticated()
-
-                        // 管理后台只有 ADMIN
-                        .requestMatchers("/api/admin/**").hasRole("ADMIN")
-
-                        // 其它模块：因子、策略、组合、交易，需登录
-                        .requestMatchers("/api/factors/**").hasAnyRole("USER","ADMIN")
-                        .requestMatchers("/api/strategies/**").hasAnyRole("USER","ADMIN")
-                        .requestMatchers("/api/portfolios/**").hasAnyRole("USER","ADMIN")
-                        .requestMatchers("/api/trades/**").hasAnyRole("USER","ADMIN")
-
-                        // 其余都得登录
-                        .anyRequest().authenticated()
-                )
-                // 把我们的 JWT Filter 加到 Spring Security 过滤链里
-                .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
-
-        return http.build();
-    }
-
+    // 密码加密
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
-    /** 跨域配置，仅开发时放行 localhost:5173 */
+    // 认证管理器，用于 AuthController 的 login 认证
     @Bean
-    CorsConfigurationSource corsConfigurationSource() {
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration authConfig) throws Exception {
+        return authConfig.getAuthenticationManager();
+    }
+
+    // JWT 过滤器 Bean
+    @Bean
+    public JwtAuthenticationFilter jwtAuthenticationFilter() {
+        return new JwtAuthenticationFilter(tokenProvider, userDetailsService);
+    }
+
+    // 安全过滤链
+    @Bean
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        http
+                // 启用 CORS 并使用下面定义的配置
+                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
+                // 关闭 CSRF，因为使用的是无状态的 JWT
+                .csrf(AbstractHttpConfigurer::disable)
+                // 不使用 Session
+                .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                // 授权规则
+                .authorizeHttpRequests(auth -> auth
+                        // 认证相关接口全部放行
+                        .requestMatchers("/api/auth/**").permitAll()
+
+                        // factor-tree 公共接口
+                        .requestMatchers(
+                                "/api/factor-tree/listWithTreeName",
+                                "/api/factor-tree/listByType",
+                                "/api/factor-tree/list",
+                                "/api/factor-tree",
+                                "/api/factor-tree/children/**"
+                        ).permitAll()
+
+                        // funds 模块公共查询
+                        .requestMatchers(HttpMethod.GET,
+                                "/api/funds/labels",
+                                "/api/funds",
+                                "/api/funds/*/profile"
+                        ).permitAll()
+                        // 保存组合需登录
+                        .requestMatchers(HttpMethod.POST, "/api/funds/portfolios").authenticated()
+
+                        // 管理后台仅 ADMIN
+                        .requestMatchers("/api/admin/**").hasRole("ADMIN")
+
+                        // 其它核心模块需 USER 或 ADMIN
+                        .requestMatchers(
+                                "/api/factors/**",
+                                "/api/strategies/**",
+                                "/api/portfolios/**",
+                                "/api/trades/**"
+                        ).hasAnyRole("USER", "ADMIN")
+
+                        // 其余 /api/** 任何接口都需登录
+                        .requestMatchers("/api/**").authenticated()
+
+                        // 除以上路径外一律拒绝
+                        .anyRequest().denyAll()
+                )
+                // 将 JWT 过滤器插入到 UsernamePasswordAuthenticationFilter 之前
+                .addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
+
+        return http.build();
+    }
+
+    // CORS 配置：开发环境下允许所有源
+    @Bean
+    public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration cfg = new CorsConfiguration();
-        cfg.setAllowedOrigins(List.of("http://localhost:5173"));
-        cfg.setAllowedMethods(List.of("GET","POST","PUT","DELETE","OPTIONS"));
+        // 开发时方便调试，允许所有域
+        cfg.setAllowedOriginPatterns(List.of("*"));
+        cfg.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         cfg.setAllowedHeaders(List.of("*"));
         cfg.setAllowCredentials(true);
+        cfg.setMaxAge(3600L);
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", cfg);

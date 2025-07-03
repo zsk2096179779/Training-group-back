@@ -15,6 +15,14 @@ public class ApiResponse<T> {
     private String msg;    // 描述
     private T data;        // 返回数据
 
+
+    public int getCode() { return code; }
+    public void setCode(int code) { this.code = code; }
+    public String getMsg() { return msg; }
+    public void setMsg(String msg) { this.msg = msg; }
+    public T getData() { return data; }
+    public void setData(T data) { this.data = data; }
+
     // 成功，无数据
     public static ApiResponse<Void> ok() {
         ApiResponse<Void> r = new ApiResponse<>();
@@ -33,10 +41,12 @@ public class ApiResponse<T> {
     }
 
     // 失败
+
     public static <T> ApiResponse<T> error(int code, String msg) {
         ApiResponse<T> r = new ApiResponse<>();
         r.setCode(code);
         r.setMsg(msg);
         return r;
     }
+
 }

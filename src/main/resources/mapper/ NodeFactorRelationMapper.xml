@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.advisor_backend.mapper.NodeFactorRelationMapper">
+
+    <resultMap id="BaseResultMap" type="com.example.advisor_backend.model.dto.entity.NodeFactorRelation">
+        <id property="id" column="id"/>
+        <result property="nodeId" column="node_id"/>
+        <result property="factorId" column="factor_id"/>
+    </resultMap>
+
+    <!-- 查询一批节点下所有因子id -->
+    <select id="selectFactorIdsByNodeIds" resultType="java.lang.Long">
+        SELECT factor_id FROM node_factor_relation
+        WHERE node_id IN
+        <foreach collection="nodeIds" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </select>
+
+    <!-- 可选：插入一条关系 -->
+    <insert id="insert" parameterType="com.example.advisor_backend.model.dto.entity.NodeFactorRelation" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO node_factor_relation(node_id, factor_id)
+        VALUES (#{nodeId}, #{factorId})
+    </insert>
+
+    <!-- 可选：按id删除 -->
+    <delete id="deleteById" parameterType="long">
+        DELETE FROM node_factor_relation WHERE id = #{id}
+    </delete>
+
+    <!-- 可选：查某节点下所有关系 -->
+    <select id="selectByNodeId" resultMap="BaseResultMap">
+        SELECT * FROM node_factor_relation WHERE node_id = #{nodeId}
+    </select>
+</mapper>
