@@ -9,5 +9,6 @@ public interface ComboService {
     List<Combo> list();
     List<Integer> getFundId(Long id);
     List<Fund> getFunds(List<Integer> ids);
-
+    List<Fund> getFundsAll();
+    void createCombo(Combo combo);
 }

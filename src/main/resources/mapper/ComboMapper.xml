@@ -19,5 +19,24 @@
     <select id="getFundId" resultType="Integer">
         SELECT fund_code FROM combo_funds WHERE combo_id = #{id}
     </select>
+    <insert id="insertCombo" parameterType="Combo">
+        INSERT INTO combos (
+            id, name, type, risk_level, strategy, status,
+            annualized_return, max_drawdown, minimum_investment,
+            created_time, updated_time, is_user_created
+        ) VALUES (
+                     #{id}, #{name}, #{type}, #{riskLevel}, #{strategy}, #{status},
+                     #{annualizedReturn}, #{maxDrawdown}, #{minimumInvestment},
+                     #{createdTime}, #{updatedTime}, #{isUserCreated}
+                 )
+    </insert>
+
+    <insert id="insertComboFund">
+        INSERT INTO combo_funds (combo_id, fund_code, weight, created_time, updated_time)
+        VALUES (#{comboId}, #{fundCode}, #{weight}, NOW(), NOW())
+    </insert>
+    <select id="getFundsAll" resultType="Fund">
+        SELECT * FROM funds
+    </select>
 
 </mapper>

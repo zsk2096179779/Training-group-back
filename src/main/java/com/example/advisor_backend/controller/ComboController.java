@@ -44,4 +44,15 @@ public class ComboController {
         return ApiResponse.ok(comboService.getFunds(ids));
     }
 
+    @GetMapping("/funds/all")
+    public ApiResponse<List<Fund>> getFundsAll(){
+        return ApiResponse.ok(comboService.getFundsAll());
+    }
+    @PostMapping("/create")
+    public ApiResponse<String> createCombo(@RequestBody Combo combo) {
+        log.info("接收到创建组合请求：{}", combo);
+        comboService.createCombo(combo);
+        return ApiResponse.ok("组合创建成功");
+    }
+
 }

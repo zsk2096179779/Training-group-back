@@ -1,6 +1,7 @@
 package com.example.advisor_backend.entity;
 
 
+//portfolio
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -16,6 +17,7 @@ import java.util.List;
 @AllArgsConstructor
 
 public class Combo {
+    private String isUserCreated;
     private String id; // 主键：组合ID
     private String name;
     private String type; // 建议改为枚举类型（如FOF/CUSTOM）
