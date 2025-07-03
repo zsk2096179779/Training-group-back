@@ -15,6 +15,12 @@ public class BusinessException extends RuntimeException {
         this.status = status;
     }
 
+    /** 默认错误码 + 状态，方便只传 message 的场景 */
+    public BusinessException(String msg) {
+        this(400, msg, HttpStatus.BAD_REQUEST);
+    }
+
+
     public int getCode() {
         return code;
     }

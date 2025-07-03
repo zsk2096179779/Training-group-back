@@ -1,6 +1,8 @@
 package com.example.advisor_backend.exception;
 
 import com.example.advisor_backend.model.dto.ApiResponse;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -11,6 +13,7 @@ import java.util.stream.Collectors;
 /**
  * 捕获并统一处理各种异常，返回 ApiResponse
  */
+@Slf4j
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
@@ -35,8 +38,9 @@ public class GlobalExceptionHandler {
     // 处理其他未捕获的异常
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ApiResponse<?>> handleOther(Exception ex) {
-        // 日志里可以记录 ex, 这里返回通用失败
-        ApiResponse<?> body = ApiResponse.error(500, "服务器内部错误");
-        return ResponseEntity.status(500).body(body);
+        log.error("Unhandled exception", ex);
+        return ResponseEntity
+                .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body(ApiResponse.error(9999, ex.getMessage()));
     }
 }
