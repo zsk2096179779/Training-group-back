@@ -1,7 +1,13 @@
 server:
   port: 8080
 
+
+mybatis-plus:
+  configuration:
+    map-underscore-to-camel-case: true
+  type-aliases-package: com.example.advisor_backend.entity      # 实体类包别名，简化XML中的resultType
 spring:
+
   datasource:
     url: jdbc:mysql://localhost:3306/trainingdb?allowPublicKeyRetrieval=true&useSSL=false&serverTimezone=Asia/Shanghai
     username: root       # 请改为你的用户名
