@@ -26,6 +26,8 @@ public class WebSecurity {
             "/strategy-management",
             "/strategy-monitoring/**",
             "/strategy-monitoring",
+            "/strategy-rebalance/**",
+            "/strategy-rebalance",
             "/test",
             "/test/**",
             "api/**"
