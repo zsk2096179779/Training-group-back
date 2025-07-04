@@ -2,14 +2,13 @@ package com.example.advisor_backend.controller;
 
 import com.example.advisor_backend.model.dto.ApiResponse;
 import com.example.advisor_backend.model.dto.FactorHistoryResponse;
-import com.example.advisor_backend.model.dto.entity.FundFactor;
-import com.example.advisor_backend.model.dto.entity.FactorHistory;
+import com.example.advisor_backend.model.entity.FundFactor;
+import com.example.advisor_backend.model.entity.FactorHistory;
 import com.example.advisor_backend.service.FundFactorService;
 import com.example.advisor_backend.mapper.FactorHistoryMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import java.util.*;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/factors")

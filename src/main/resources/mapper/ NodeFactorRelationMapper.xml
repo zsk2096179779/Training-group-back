@@ -4,7 +4,7 @@
 
 <mapper namespace="com.example.advisor_backend.mapper.NodeFactorRelationMapper">
 
-    <resultMap id="BaseResultMap" type="com.example.advisor_backend.model.dto.entity.NodeFactorRelation">
+    <resultMap id="BaseResultMap" type="com.example.advisor_backend.model.entity.NodeFactorRelation">
         <id property="id" column="id"/>
         <result property="nodeId" column="node_id"/>
         <result property="factorId" column="factor_id"/>
@@ -20,7 +20,7 @@
     </select>
 
     <!-- 可选：插入一条关系 -->
-    <insert id="insert" parameterType="com.example.advisor_backend.model.dto.entity.NodeFactorRelation" useGeneratedKeys="true" keyProperty="id">
+    <insert id="insert" parameterType="com.example.advisor_backend.model.entity.NodeFactorRelation" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO node_factor_relation(node_id, factor_id)
         VALUES (#{nodeId}, #{factorId})
     </insert>

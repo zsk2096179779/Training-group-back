@@ -1,6 +1,6 @@
 package com.example.advisor_backend.mapper;
 
-import com.example.advisor_backend.model.dto.entity.DataSourceConfig;
+import com.example.advisor_backend.model.entity.DataSourceConfig;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 

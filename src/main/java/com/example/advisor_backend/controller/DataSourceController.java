@@ -1,12 +1,11 @@
 package com.example.advisor_backend.controller;
 
-import com.example.advisor_backend.model.dto.entity.DataSourceConfig;
+import com.example.advisor_backend.model.entity.DataSourceConfig;
 import com.example.advisor_backend.model.dto.ApiResponse;
-import com.example.advisor_backend.model.dto.entity.RunScriptRequest;
-import com.example.advisor_backend.model.dto.entity.ScriptExecutionResult;
+import com.example.advisor_backend.model.entity.RunScriptRequest;
+import com.example.advisor_backend.model.entity.ScriptExecutionResult;
 import com.example.advisor_backend.service.DataSourceService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;

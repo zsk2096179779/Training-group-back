@@ -4,7 +4,7 @@
 
 <mapper namespace="com.example.advisor_backend.mapper.FactorTreeNodeMapper">
 
-    <resultMap id="BaseResultMap" type="com.example.advisor_backend.model.dto.entity.FactorTreeNode">
+    <resultMap id="BaseResultMap" type="com.example.advisor_backend.model.entity.FactorTreeNode">
         <id property="id" column="id" />
         <result property="name" column="name" />
         <result property="parentId" column="parent_id" />
@@ -31,7 +31,7 @@
     <select id="selectByTreeType" parameterType="java.lang.String" resultMap="BaseResultMap">
         SELECT * FROM factor_tree_node WHERE tree_type = #{treeType}
     </select>
-    <insert id="insert" parameterType="com.example.advisor_backend.model.dto.entity.FactorTreeNode" useGeneratedKeys="true" keyProperty="id">
+    <insert id="insert" parameterType="com.example.advisor_backend.model.entity.FactorTreeNode" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO factor_tree_node(name, parent_id, tree_type, sort_order, create_time, update_time, tree_name)
         VALUES (#{name}, #{parentId}, #{treeType}, #{sortOrder}, NOW(), NOW(), #{treeName})
     </insert>
@@ -53,7 +53,7 @@
             ) s ON t.id = s.id
             SET t.sort_order = s.new_order;
     </update>
-    <update id="update" parameterType="com.example.advisor_backend.model.dto.entity.FactorTreeNode">
+    <update id="update" parameterType="com.example.advisor_backend.model.entity.FactorTreeNode">
         UPDATE factor_tree_node
         SET name = #{name},
             parent_id = #{parentId},

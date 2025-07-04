@@ -1,17 +1,21 @@
-package com.example.advisor_backend.model.dto.entity;
+package com.example.advisor_backend.model.entity;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+import lombok.Getter;
+import lombok.Setter;
+import org.springframework.data.repository.cdi.Eager;
+
+@Setter
+@Getter
+@Entity
+@Table(name = "node_factor_relation")
 public class NodeFactorRelation {
+    // getter/setter
+    @Id
     private Long id;
     private Long nodeId;
     private Long factorId;
 
-    // getter/setter
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
-
-    public Long getNodeId() { return nodeId; }
-    public void setNodeId(Long nodeId) { this.nodeId = nodeId; }
-
-    public Long getFactorId() { return factorId; }
-    public void setFactorId(Long factorId) { this.factorId = factorId; }
 }

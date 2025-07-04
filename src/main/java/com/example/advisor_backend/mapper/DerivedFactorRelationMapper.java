@@ -2,7 +2,7 @@ package com.example.advisor_backend.mapper;
 
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
-import com.example.advisor_backend.model.dto.entity.FactorDerivation;
+import com.example.advisor_backend.model.entity.FactorDerivation;
 
 @Mapper
 public interface DerivedFactorRelationMapper {

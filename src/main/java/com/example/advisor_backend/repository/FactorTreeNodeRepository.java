@@ -1,6 +1,6 @@
 package com.example.advisor_backend.repository;
 
-import com.example.advisor_backend.model.dto.entity.FactorTreeNode;
+import com.example.advisor_backend.model.entity.FactorTreeNode;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

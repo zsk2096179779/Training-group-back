@@ -1,7 +1,7 @@
 package com.example.advisor_backend.service;
 
 
-import com.example.advisor_backend.model.dto.entity.FactorTreeNode;
+import com.example.advisor_backend.model.entity.FactorTreeNode;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;

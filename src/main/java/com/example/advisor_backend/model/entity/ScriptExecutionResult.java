@@ -1,4 +1,4 @@
-package com.example.advisor_backend.model.dto.entity;
+package com.example.advisor_backend.model.entity;
 
 public class ScriptExecutionResult {
     private String log;

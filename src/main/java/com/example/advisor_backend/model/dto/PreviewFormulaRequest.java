@@ -1,8 +1,4 @@
 package com.example.advisor_backend.model.dto;
-import com.example.advisor_backend.model.dto.entity.FundFactor;
-
-import java.util.List;
-
 
 import java.util.List;
 

@@ -1,10 +1,9 @@
 package com.example.advisor_backend.mapper;
 
-import com.example.advisor_backend.model.dto.entity.FactorDto;
-import com.example.advisor_backend.model.dto.entity.FundFactor;
+import com.example.advisor_backend.model.entity.FactorDto;
+import com.example.advisor_backend.model.entity.FundFactor;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Select;
 
 import java.util.List;
 @Mapper

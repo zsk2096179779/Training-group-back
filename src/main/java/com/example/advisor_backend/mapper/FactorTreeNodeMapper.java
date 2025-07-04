@@ -1,6 +1,6 @@
 package com.example.advisor_backend.mapper;
 
-import com.example.advisor_backend.model.dto.entity.FactorTreeNode;
+import com.example.advisor_backend.model.entity.FactorTreeNode;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;

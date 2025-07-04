@@ -2,14 +2,13 @@ package com.example.advisor_backend.controller;
 
 import com.example.advisor_backend.model.dto.BaseFactorRef;
 import com.example.advisor_backend.model.dto.PreviewFormulaRequest;
-import com.example.advisor_backend.model.dto.entity.FundFactor;
+import com.example.advisor_backend.model.entity.FundFactor;
 import com.example.advisor_backend.model.dto.ApiResponse;
 import com.example.advisor_backend.service.FundFactorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;

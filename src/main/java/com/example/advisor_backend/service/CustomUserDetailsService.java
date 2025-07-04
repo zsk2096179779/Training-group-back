@@ -1,30 +1,10 @@
-// src/main/java/com/example/advisor_backend/service/CustomUserDetailsService.java
 package com.example.advisor_backend.service;
 
-import com.example.advisor_backend.model.entity.User;
-import com.example.advisor_backend.repository.UserRepository;
-import org.springframework.security.core.*;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.*;
-import org.springframework.stereotype.Service;
+import org.springframework.security.core.userdetails.UserDetailsService;
 
-import java.util.List;
-
-@Service
-public class CustomUserDetailsService implements UserDetailsService {
-    private final UserRepository userRepo;
-
-    public CustomUserDetailsService(UserRepository userRepo) {
-        this.userRepo = userRepo;
-    }
-
-    @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User u = userRepo.findByUsername(username)
-                .orElseThrow(() -> new UsernameNotFoundException("用户不存在"));
-        List<GrantedAuthority> auths =
-                List.of(new SimpleGrantedAuthority(u.getRole().name()));
-        return new org.springframework.security.core.userdetails.User(
-                u.getUsername(), u.getPassword(), auths);
-    }
+/**
+ * 自定义的 UserDetailsService 接口，继承自 Spring Security 的 UserDetailsService
+ */
+public interface CustomUserDetailsService extends UserDetailsService {
+    // 目前无需额外方法，直接复用 loadUserByUsername
 }

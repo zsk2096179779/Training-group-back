@@ -1,8 +1,8 @@
-package com.example.advisor_backend.service.impl;
+package com.example.advisor_backend.service.ServiceImpl;
 
 import com.example.advisor_backend.mapper.DerivedFactorRelationMapper;
 import com.example.advisor_backend.model.dto.CreateDerivedFactorRequest;
-import com.example.advisor_backend.model.dto.entity.FundFactor;
+import com.example.advisor_backend.model.entity.FundFactor;
 import com.example.advisor_backend.service.DerivedFactorService;
 import com.example.advisor_backend.mapper.FundFactorMapper;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,4 +1,4 @@
-package com.example.advisor_backend.model.dto.entity;
+package com.example.advisor_backend.model.entity;
 
 // 在你的dto或model包下创建这个文件
 public class RunScriptRequest {

@@ -1,6 +1,6 @@
 package com.example.advisor_backend.model.dto;
 
-import com.example.advisor_backend.model.dto.entity.FactorTreeNode;
+import com.example.advisor_backend.model.entity.FactorTreeNode;
 import java.util.List;
 
 public class TreeWithNodesDto {

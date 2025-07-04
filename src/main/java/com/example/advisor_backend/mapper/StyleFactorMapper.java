@@ -1,6 +1,6 @@
 package com.example.advisor_backend.mapper;
 
-import com.example.advisor_backend.model.dto.entity.StyleFactor;
+import com.example.advisor_backend.model.entity.StyleFactor;
 import org.apache.ibatis.annotations.*;
 import java.util.List;
 

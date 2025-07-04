@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.advisor_backend.mapper.DataSourceConfigMapper">
-    <resultMap id="BaseResultMap" type="com.example.advisor_backend.model.dto.entity.DataSourceConfig">
+    <resultMap id="BaseResultMap" type="com.example.advisor_backend.model.entity.DataSourceConfig">
         <id property="id" column="id" />
         <result property="name" column="name" />
         <result property="type" column="type" />
@@ -11,12 +11,12 @@
         <result property="updateTime" column="update_time" />
     </resultMap>
 
-    <insert id="insert" parameterType="com.example.advisor_backend.model.dto.entity.DataSourceConfig" useGeneratedKeys="true" keyProperty="id">
+    <insert id="insert" parameterType="com.example.advisor_backend.model.entity.DataSourceConfig" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO data_source_config(name, type, config_json, create_time, update_time)
         VALUES (#{name}, #{type}, #{configJson}, NOW(), NOW())
     </insert>
 
-    <update id="update" parameterType="com.example.advisor_backend.model.dto.entity.DataSourceConfig">
+    <update id="update" parameterType="com.example.advisor_backend.model.entity.DataSourceConfig">
         UPDATE data_source_config
         SET name = #{name},
             type = #{type},

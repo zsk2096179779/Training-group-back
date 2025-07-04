@@ -1,4 +1,4 @@
-package com.example.advisor_backend.model.dto.entity;
+package com.example.advisor_backend.model.entity;
 
 import lombok.Data;
 import java.time.LocalDateTime;

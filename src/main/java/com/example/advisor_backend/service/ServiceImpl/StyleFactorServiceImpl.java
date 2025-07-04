@@ -1,7 +1,7 @@
-package com.example.advisor_backend.service.impl;
+package com.example.advisor_backend.service.ServiceImpl;
 
 import com.example.advisor_backend.mapper.StyleFactorMapper;
-import com.example.advisor_backend.model.dto.entity.StyleFactor;
+import com.example.advisor_backend.model.entity.StyleFactor;
 import com.example.advisor_backend.service.StyleFactorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

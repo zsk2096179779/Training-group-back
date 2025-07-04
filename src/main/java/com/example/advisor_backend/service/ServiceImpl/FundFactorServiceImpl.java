@@ -1,10 +1,11 @@
-package com.example.advisor_backend.service.impl;
+package com.example.advisor_backend.service.ServiceImpl;
 
 import com.example.advisor_backend.mapper.FactorTreeNodeMapper;
 import com.example.advisor_backend.mapper.FundFactorMapper;
 import com.example.advisor_backend.mapper.NodeFactorRelationMapper;
 import com.example.advisor_backend.mapper.DerivedFactorRelationMapper;
-import com.example.advisor_backend.model.dto.entity.FundFactor;
+import com.example.advisor_backend.model.entity.FundFactor;
+import com.example.advisor_backend.model.entity.FactorDerivation;
 import com.example.advisor_backend.service.FundFactorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -70,7 +71,7 @@ public class FundFactorServiceImpl implements FundFactorService {
             // 2. 保存衍生因子与基础因子的关系
             if (factor.getBaseFactors() != null) {
                 for (FundFactor.BaseFactorRef ref : factor.getBaseFactors()) {
-                    com.example.advisor_backend.model.dto.entity.FactorDerivation derivation = new com.example.advisor_backend.model.dto.entity.FactorDerivation();
+                    FactorDerivation derivation = new FactorDerivation();
                     derivation.setFactorId(factor.getId());
                     derivation.setBaseFactorId(ref.getBaseFactorId());
                     derivation.setWeight(ref.getWeight());

@@ -1,6 +1,6 @@
 package com.example.advisor_backend.mapper;
 
-import com.example.advisor_backend.model.dto.entity.NodeFactorRelation;
+import com.example.advisor_backend.model.entity.NodeFactorRelation;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import java.util.List;

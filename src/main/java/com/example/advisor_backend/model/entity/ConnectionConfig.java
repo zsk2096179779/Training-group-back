@@ -1,4 +1,4 @@
-package com.example.advisor_backend.model.dto.entity;
+package com.example.advisor_backend.model.entity;
 // 请在 dto 包下创建这个文件
 // com.example.advisor_backend.model.dto.ConnectionConfig
 public class ConnectionConfig {

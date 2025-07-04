@@ -1,6 +1,6 @@
 package com.example.advisor_backend.controller;
 
-import com.example.advisor_backend.model.dto.entity.StyleFactor;
+import com.example.advisor_backend.model.entity.StyleFactor;
 import com.example.advisor_backend.model.dto.ApiResponse;
 import com.example.advisor_backend.service.StyleFactorService;
 import org.springframework.beans.factory.annotation.Autowired;

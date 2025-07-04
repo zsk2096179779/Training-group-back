@@ -5,7 +5,7 @@
 <mapper namespace="com.example.advisor_backend.mapper.FundFactorMapper">
 
     <!-- 结果集映射，type 改为通用实体类 -->
-    <resultMap id="BaseResultMap" type="com.example.advisor_backend.model.dto.entity.FundFactor">
+    <resultMap id="BaseResultMap" type="com.example.advisor_backend.model.entity.FundFactor">
         <id property="id" column="id"/>
         <result property="name" column="name"/>
         <result property="code" column="code"/>
@@ -50,7 +50,7 @@
 
     <!-- 【修改】插入因子，适配新的DTO和表结构，并返回主键ID -->
 
-    <insert id="insert" parameterType="com.example.advisor_backend.model.dto.entity.FundFactor" useGeneratedKeys="true" keyProperty="id">
+    <insert id="insert" parameterType="com.example.advisor_backend.model.entity.FundFactor" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO fund_factor(name, code, category, description, type, create_time, update_time)
         VALUES (#{name}, #{code}, #{category}, #{description}, #{type}, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)
     </insert>
@@ -69,7 +69,7 @@
     </delete>
 
     <!-- 【修改】更新因子，适配新的DTO -->
-    <update id="update" parameterType="com.example.advisor_backend.model.dto.entity.FundFactor">
+    <update id="update" parameterType="com.example.advisor_backend.model.entity.FundFactor">
         UPDATE fund_factor
         SET name = #{name},
             code = #{code},

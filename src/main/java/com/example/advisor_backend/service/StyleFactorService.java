@@ -1,6 +1,6 @@
 package com.example.advisor_backend.service;
 
-import com.example.advisor_backend.model.dto.entity.StyleFactor;
+import com.example.advisor_backend.model.entity.StyleFactor;
 import java.util.List;
 
 public interface StyleFactorService {

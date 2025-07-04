@@ -1,19 +1,18 @@
 // src/main/java/com/example/advisor_backend/controller/AuthController.java
 package com.example.advisor_backend.controller;
 
-import com.example.advisor_backend.model.dto.JwtAuthenticationResponse;
 import com.example.advisor_backend.model.dto.LoginRequest;
 import com.example.advisor_backend.model.dto.RegisterRequest;
-import com.example.advisor_backend.model.entity.Role;
+import com.example.advisor_backend.model.dto.JwtAuthenticationResponse;
 import com.example.advisor_backend.model.entity.User;
+import com.example.advisor_backend.model.entity.Role;
 import com.example.advisor_backend.repository.UserRepository;
 import com.example.advisor_backend.security.JwtTokenProvider;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.authentication.*;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -27,37 +26,58 @@ import java.util.Map;
 @CrossOrigin
 public class AuthController {
 
-    @Autowired
-    private AuthenticationManager authenticationManager;
+    private final AuthenticationManager authenticationManager;
+    private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
+    private final JwtTokenProvider tokenProvider;
 
     @Autowired
-    private UserRepository userRepository;
+    public AuthController(AuthenticationManager authenticationManager,
+                          UserRepository userRepository,
+                          PasswordEncoder passwordEncoder,
+                          JwtTokenProvider tokenProvider) {
+        this.authenticationManager = authenticationManager;
+        this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
+        this.tokenProvider = tokenProvider;
+    }
 
-    @Autowired
-    private PasswordEncoder passwordEncoder;
+    @PostMapping("/register")
+    public ResponseEntity<?> register(@RequestBody @Valid RegisterRequest registerRequest) {
+        if (userRepository.findByEmail(registerRequest.getEmail()).isPresent()) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body("Email Address already in use!");
+        }
 
-    @Autowired
-    private JwtTokenProvider tokenProvider;
+        User user = new User();
+        user.setUsername(registerRequest.getUsername());
+        user.setEmail(registerRequest.getEmail());
+        user.setPassword(passwordEncoder.encode(registerRequest.getPassword()));
+        user.setRole(Role.ROLE_USER);
 
-    @PostMapping("/login/")
-    public ResponseEntity<?> authenticateUser(@RequestBody LoginRequest loginRequest) {
+        userRepository.save(user);
+
+        return ResponseEntity.ok("User registered successfully");
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<?> login(@RequestBody @Valid LoginRequest loginRequest) {
         try {
-            // 1. 用email查找用户
-            User user = userRepository.findByEmail(loginRequest.getEmail())
+            // 1. 查找用户
+            User user = userRepository.findByUsername(loginRequest.getUsername())
                     .orElseThrow(() -> new RuntimeException("User not found"));
 
-            // 2. 用查到的username和密码做认证
+            // 2. 认证
             Authentication authentication = authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(
-                            user.getUsername(), // 这里必须是username
+                            user.getUsername(),
                             loginRequest.getPassword()
                     )
             );
-
             SecurityContextHolder.getContext().setAuthentication(authentication);
-            String jwt = tokenProvider.generateToken(authentication);
 
-            // 3. 返回token和用户信息
+            // 3. 生成并返回 JWT
+            String jwt = tokenProvider.generateToken(user.getUsername(), user.getRole());
             return ResponseEntity.ok(new JwtAuthenticationResponse(jwt, user));
 
         } catch (BadCredentialsException e) {
@@ -69,27 +89,10 @@ public class AuthController {
             return new ResponseEntity<>(errorDetails, HttpStatus.UNAUTHORIZED);
         }
     }
+
     @PostMapping("/logout")
     public ResponseEntity<?> logout() {
-        // 这里可以做一些日志记录，或者将 token 加入黑名单（如有实现）
+        // 如果有黑名单或日志需求，可在此扩展
         return ResponseEntity.ok("Logout success");
-    }
-    @PostMapping("/register/") // <--- 添加斜杠
-    public ResponseEntity<?> registerUser(@RequestBody RegisterRequest registerRequest) {
-
-
-        if (userRepository.findByEmail(registerRequest.getEmail()).isPresent()) {
-            return new ResponseEntity<>("Email Address already in use!", HttpStatus.BAD_REQUEST);
-        }
-
-        User user = new User();
-        user.setUsername(registerRequest.getUsername());
-        user.setEmail(registerRequest.getEmail());
-        user.setPassword(passwordEncoder.encode(registerRequest.getPassword()));
-        user.setRole(Role.ROLE_USER);
-
-        userRepository.save(user);
-
-        return new ResponseEntity<>("User registered successfully", HttpStatus.OK);
     }
 }

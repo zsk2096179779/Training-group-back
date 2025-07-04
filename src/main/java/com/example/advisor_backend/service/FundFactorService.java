@@ -1,6 +1,6 @@
 package com.example.advisor_backend.service;
 
-import com.example.advisor_backend.model.dto.entity.FundFactor;
+import com.example.advisor_backend.model.entity.FundFactor;
 
 import java.util.List;
 
