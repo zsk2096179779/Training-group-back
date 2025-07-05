@@ -1,7 +1,7 @@
 package com.example.advisor_backend.mapper;
 
-import com.example.advisor_backend.entity.Combo;
-import com.example.advisor_backend.entity.Fund;
+import com.example.advisor_backend.model.entity.Combo;
+import com.example.advisor_backend.model.entity.Fund;
 import org.apache.ibatis.annotations.*;
 
 import java.math.BigDecimal;

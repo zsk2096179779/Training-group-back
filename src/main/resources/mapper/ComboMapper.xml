@@ -5,22 +5,22 @@
 
     <!-- 实现 getFunds 方法 -->
     <select id="getFunds" resultType="Fund">
-        SELECT * FROM funds
-        WHERE fund_code IN
+        SELECT * FROM fund
+        WHERE code IN
         <foreach item="id" collection="ids" open="(" separator="," close=")">
             #{id}
         </foreach>
     </select>
 
     <select id="list" resultType="Combo">
-        SELECT * FROM combos
+        SELECT * FROM combo
     </select>
 
     <select id="getFundId" resultType="Integer">
-        SELECT fund_code FROM combo_funds WHERE combo_id = #{id}
+        SELECT fund_code FROM combo_fund WHERE combo_id = #{id}
     </select>
     <insert id="insertCombo" parameterType="Combo">
-        INSERT INTO combos (
+        INSERT INTO combo (
             id, name, type, risk_level, strategy, status,
             annualized_return, max_drawdown, minimum_investment,
             created_time, updated_time, is_user_created
@@ -31,12 +31,12 @@
                  )
     </insert>
 
-    <insert id="insertComboFund">
-        INSERT INTO combo_funds (combo_id, fund_code, weight, created_time, updated_time)
+    <insert id="insertComboFund" parameterType="map">
+        INSERT INTO combo_fund (combo_id, fund_code, weight, created_time, updated_time)
         VALUES (#{comboId}, #{fundCode}, #{weight}, NOW(), NOW())
     </insert>
     <select id="getFundsAll" resultType="Fund">
-        SELECT * FROM funds
+        SELECT * FROM fund
     </select>
 
 </mapper>

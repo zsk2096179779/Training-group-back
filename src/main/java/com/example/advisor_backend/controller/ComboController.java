@@ -1,22 +1,20 @@
 package com.example.advisor_backend.controller;
 
-import com.example.advisor_backend.entity.Combo;
-import com.example.advisor_backend.entity.Fund;
+import com.example.advisor_backend.model.dto.ComboCreateRequest;
+import com.example.advisor_backend.model.entity.Combo;
 import com.example.advisor_backend.model.dto.ApiResponse;
+import com.example.advisor_backend.model.entity.Fund;
 import com.example.advisor_backend.service.ComboService;
 import lombok.extern.slf4j.Slf4j;
-import org.hibernate.cache.spi.support.AbstractReadWriteAccess;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Map;
 
 //允许跨域，后续更改前端api
 @CrossOrigin(origins = "*")
 @RestController
-@RequestMapping("/combos")
+@RequestMapping("/api/combos")
 @Slf4j
 public class ComboController {
     @Autowired
@@ -48,10 +46,11 @@ public class ComboController {
     public ApiResponse<List<Fund>> getFundsAll(){
         return ApiResponse.ok(comboService.getFundsAll());
     }
+
     @PostMapping("/create")
-    public ApiResponse<String> createCombo(@RequestBody Combo combo) {
-        log.info("接收到创建组合请求：{}", combo);
-        comboService.createCombo(combo);
+    public ApiResponse<String> createCombo(@RequestBody ComboCreateRequest req) {
+        log.info("接收到创建组合请求：{}", req);
+        comboService.createCombo(req);
         return ApiResponse.ok("组合创建成功");
     }
 
