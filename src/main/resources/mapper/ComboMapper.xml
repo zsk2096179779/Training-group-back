@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.advisor_backend.mapper.ComboMapper">  <!-- 需与接口全限定名一致 -->
+
+    <!-- 实现 getFunds 方法 -->
+    <select id="getFunds" resultType="Fund">
+        SELECT * FROM fund
+        WHERE code IN
+        <foreach item="id" collection="ids" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </select>
+
+    <select id="list" resultType="Combo">
+        SELECT * FROM combo
+    </select>
+
+    <select id="getFundId" resultType="Integer">
+        SELECT fund_code FROM combo_fund WHERE combo_id = #{id}
+    </select>
+    <insert id="insertCombo" parameterType="Combo">
+        INSERT INTO combo (
+            id, name, type, risk_level, strategy, status,
+            annualized_return, max_drawdown, minimum_investment,
+            created_time, updated_time, is_user_created
+        ) VALUES (
+                     #{id}, #{name}, #{type}, #{riskLevel}, #{strategy}, #{status},
+                     #{annualizedReturn}, #{maxDrawdown}, #{minimumInvestment},
+                     #{createdTime}, #{updatedTime}, #{isUserCreated}
+                 )
+    </insert>
+
+    <insert id="insertComboFund" parameterType="map">
+        INSERT INTO combo_fund (combo_id, fund_code, weight, created_time, updated_time)
+        VALUES (#{comboId}, #{fundCode}, #{weight}, NOW(), NOW())
+    </insert>
+    <select id="getFundsAll" resultType="Fund">
+        SELECT * FROM fund
+    </select>
+
+</mapper>
