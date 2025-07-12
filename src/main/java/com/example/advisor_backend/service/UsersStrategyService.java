@@ -7,7 +7,7 @@ import org.springframework.data.domain.Page;
 import java.util.List;
 
 public interface UsersStrategyService {
-    List<Strategy> getStrategiesByUser(User user);
+    List<Strategy> getAllStrategies();
 
     Strategy getStrategiesById(Integer strategyId);
 

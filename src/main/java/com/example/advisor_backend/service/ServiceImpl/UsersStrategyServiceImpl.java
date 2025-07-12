@@ -1,5 +1,6 @@
 package com.example.advisor_backend.service.ServiceImpl;
 
+import com.example.advisor_backend.mapper.StrategyMapper;
 import com.example.advisor_backend.repository.StrategyRepository;
 import com.example.advisor_backend.model.entity.Strategy;
 import com.example.advisor_backend.exception.BusinessException;
@@ -11,10 +12,7 @@ import jakarta.persistence.criteria.Predicate;
 import jakarta.persistence.criteria.Root;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.*;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -28,10 +26,13 @@ public class UsersStrategyServiceImpl implements UsersStrategyService {
     @Autowired
     private StrategyRepository strategyRepository;
 
+    @Autowired
+    private StrategyMapper strategyMapper;
+
     @Override
-    public List<Strategy> getStrategiesByUser(User user) {
-        // 根据用户ID查询关联策略
-        return strategyRepository.findByOwner(Math.toIntExact(user.getId()));
+    public List<Strategy> getAllStrategies() {
+        // 直接返回所有策略数据
+        return strategyRepository.findAll();
     }
 
     @Override
@@ -48,39 +49,36 @@ public class UsersStrategyServiceImpl implements UsersStrategyService {
             String nameFilter,
             String statusFilter
     ) {
-        // 注意 page 前端传 1 就对应 Spring Data 的 0
-        Pageable pageable = PageRequest.of(page - 1, limit, Sort.by(Sort.Direction.DESC, "createTime"));
+        // 计算分页的偏移量
+        int offset = page * limit;
 
-        Specification<Strategy> spec = (root, query, cb) -> {
-            List<Predicate> predicates = new ArrayList<>();
+        // 查询策略数据
+        List<Strategy> strategies = strategyMapper.findAll(
+                user.getId(),
+                nameFilter,
+                statusFilter,
+                offset,
+                limit
+        );
 
-            // 1) 按 owner 字段过滤
-            predicates.add(cb.equal(root.get("owner"), user.getId()));
+        // 打印查询到的策略数据
+        for (Strategy strategy : strategies) {
+            System.out.println("Found Strategy: " + strategy.getName());
+        }
 
-            // 2) 名称搜索
-            if (StringUtils.hasText(nameFilter)) {
-                predicates.add(cb.like(root.get("name"), "%" + nameFilter.trim() + "%"));
-            }
+// 查询策略总数
+        long total = strategyMapper.countStrategies(user.getId(), nameFilter, statusFilter);
+        System.out.println("Total strategies: " + total);
 
-            // 3) 状态过滤（all 表示不过滤）
-            if (StringUtils.hasText(statusFilter) && !"all".equalsIgnoreCase(statusFilter)) {
-                // 如果你的实体里 status 字段是枚举或者大写存储，请做相应调整
-                predicates.add(cb.equal(root.get("status"), statusFilter.toUpperCase()));
-            }
+        // 使用 Spring Data JPA 的 PageImpl 创建分页结果
+        return new PageImpl<>(strategies, PageRequest.of(page, limit), total);
 
-            return cb.and(predicates.toArray(new Predicate[0]));
-        };
-
-        return strategyRepository.findAll(spec, pageable);
     }
 
 
     @Transactional
     public void startStrategy(Integer strategyId) {
         Strategy strategy = getStrategiesById(strategyId);
-        if ("active".equals(strategy.getStatus())) {
-            throw new BusinessException(400, "策略已运行", HttpStatus.BAD_REQUEST);
-        }
         strategy.setStatus(Strategy.Status.valueOf("active"));
         strategyRepository.save(strategy);
     }
@@ -88,9 +86,6 @@ public class UsersStrategyServiceImpl implements UsersStrategyService {
     @Transactional
     public void stopStrategy(Integer strategyId) {
         Strategy strategy = getStrategiesById(strategyId);
-        if ("stop".equals(strategy.getStatus())) {
-            throw new BusinessException(400, "策略已停止", HttpStatus.BAD_REQUEST);
-        }
         strategy.setStatus(Strategy.Status.valueOf("stop"));
         strategyRepository.save(strategy);
     }
@@ -99,9 +94,6 @@ public class UsersStrategyServiceImpl implements UsersStrategyService {
     public void deleteStrategy(Integer strategyId) {
         Strategy strategy = getStrategiesById(strategyId);
         // 先停止策略再删除
-        if ("active".equals(strategy.getStatus())) {
-            stopStrategy(strategyId);
-        }
         strategyRepository.deleteById(strategyId);
     }
     @Transactional

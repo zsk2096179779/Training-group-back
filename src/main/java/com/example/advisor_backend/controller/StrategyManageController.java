@@ -8,11 +8,15 @@ import com.example.advisor_backend.service.ServiceImpl.UsersStrategyServiceImpl;
 import com.example.advisor_backend.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -43,36 +47,56 @@ public class StrategyManageController {
             Principal principal,
             @RequestBody StrategyListRequest req
     ) {
-        // 1. 从 Principal 中取用户名
-        String username = principal.getName();
-        // 2. 根据用户名查用户
-        User user = userService.getUserByName(username);
-        if (user == null) {
-            return ResponseEntity
-                    .status(HttpStatus.NOT_FOUND)
-                    .body(Map.of("success", false, "message", "用户不存在"));
-        }
+        // 打印过滤条件，调试用
+        System.out.println("Received filters:");
+        System.out.println("nameFilter: " + req.getNameFilter());
+        System.out.println("statusFilter: " + req.getStatusFilter());
+        System.out.println("Page: " + req.getPage());
+        System.out.println("Limit: " + req.getLimit());
 
-        // 3. 调用 Service 拿到分页+过滤后的结果
-        //    （假设 service 已实现 getStrategiesByUserAndFilter(...) 方法）
-        Page<Strategy> page = strategyService.getStrategiesByUserAndFilter(
-                user,
-                req.getPage(),
-                req.getLimit(),
-                req.getNameFilter(),
-                req.getStatusFilter()
-        );
+//        // 从 Principal 中取用户名
+//        String username = principal.getName();
+//        User user = userService.getUserByName(username);
+//        if (user == null) {
+//            return ResponseEntity
+//                    .status(HttpStatus.NOT_FOUND)
+//                    .body(Map.of("success", false, "message", "用户不存在"));
+//        }
+//
+//        // 调用服务层获取分页数据
+//        Page<Strategy> strategies = strategyService.getStrategiesByUserAndFilter(
+//                user,
+//                req.getPage() - 1 , // 从 0 开始
+//                req.getLimit(),
+//                req.getNameFilter(),
+//                req.getStatusFilter()
+//        );
+//
+//        // 构建响应数据
+//        Map<String, Object> resp = new HashMap<>();
+//        resp.put("success", true);
+//        resp.put("records", strategies.getContent());
+//        resp.put("total", strategies.getTotalElements());
+//
+//        return ResponseEntity.ok(Map.of("data", resp));
+        // 查询数据，直接取出数据，不做过滤和分页，简化查询逻辑
+        List<Strategy> strategies = strategyService.getAllStrategies();
 
-        List<Strategy> list = page.getContent();
-        long total = page.getTotalElements();
 
+        // 构建响应数据
         Map<String, Object> resp = new HashMap<>();
         resp.put("success", true);
-        resp.put("records", list);
-        resp.put("total", total);
+        resp.put("records", strategies); // 直接返回查询的策略数据
+        resp.put("total", strategies.size()); // 返回总条数
 
-        return ResponseEntity.ok(resp);
+        // 返回响应数据
+        return ResponseEntity.ok(Map.of("data", resp));  // 返回的数据包装在 "data" 字段内
     }
+
+
+
+
+
 
     /**
      * 启动某条策略
