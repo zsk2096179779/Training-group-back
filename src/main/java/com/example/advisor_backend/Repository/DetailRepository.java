@@ -1,7 +1,7 @@
-package com.example.advisor_backend.Repository;
+package com.example.advisor_backend.repository;
 
-import com.example.advisor_backend.bean.Detail;
-import com.example.advisor_backend.bean.Strategy;
+import com.example.advisor_backend.model.entity.Detail;
+import com.example.advisor_backend.model.entity.Strategy;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;

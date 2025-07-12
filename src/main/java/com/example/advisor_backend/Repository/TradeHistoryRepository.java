@@ -1,8 +1,6 @@
-package com.example.advisor_backend.Repository;
+package com.example.advisor_backend.repository;
 
-import com.example.advisor_backend.bean.Holding;
-import com.example.advisor_backend.bean.Strategy;
-import com.example.advisor_backend.bean.TradeHistory;
+import com.example.advisor_backend.model.entity.TradeHistory;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;

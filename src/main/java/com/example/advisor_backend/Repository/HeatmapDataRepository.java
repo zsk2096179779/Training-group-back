@@ -1,7 +1,6 @@
-package com.example.advisor_backend.Repository;
+package com.example.advisor_backend.repository;
 
-import com.example.advisor_backend.bean.HeatmapData;
-import com.example.advisor_backend.bean.MonitorMetrics;
+import com.example.advisor_backend.model.entity.HeatmapData;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

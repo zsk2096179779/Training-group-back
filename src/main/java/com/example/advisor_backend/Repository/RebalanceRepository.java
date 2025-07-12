@@ -1,7 +1,6 @@
-package com.example.advisor_backend.Repository;
+package com.example.advisor_backend.repository;
 
-import com.example.advisor_backend.bean.ProfitCurve;
-import com.example.advisor_backend.bean.RebalanceSetting;
+import com.example.advisor_backend.model.entity.RebalanceSetting;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface RebalanceRepository extends JpaRepository<RebalanceSetting, Integer> {

@@ -7,8 +7,8 @@ import lombok.Setter;
 /**
  * 通用 API 返回格式
  */
-@Getter
-@Setter
+
+@Getter @Setter
 @NoArgsConstructor
 public class ApiResponse<T> {
     private int code;      // 0 成功，非 0 失败
@@ -16,11 +16,10 @@ public class ApiResponse<T> {
     private T data;        // 返回数据
 
 
-    public int getCode() { return code; }
     public void setCode(int code) { this.code = code; }
-    public String getMsg() { return msg; }
+
     public void setMsg(String msg) { this.msg = msg; }
-    public T getData() { return data; }
+
     public void setData(T data) { this.data = data; }
 
     // 成功，无数据

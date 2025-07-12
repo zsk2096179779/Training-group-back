@@ -94,9 +94,15 @@ public class SecurityConfig {
                         // 其它核心模块需 USER 或 ADMIN
                         .requestMatchers(
                                 "/api/factors/**",
-                                "/api/strategies/**",
-                                "/api/portfolios/**",
-                                "/api/trades/**"
+                                "/api/strategy-monitoring/**",
+                                "/api/strategy-management/**",
+                                "/api/strategy-rebalance/**",
+                                "/api/trading/**",
+                                "/api/auth/**",
+                                "/api/combos/**",
+                                "/api/datasource/**",
+                                "/api/derived-factor/**",
+                                "/api/style-factors/**"
                         ).hasAnyRole("USER", "ADMIN")
 
                         // 其余 /api/** 任何接口都需登录

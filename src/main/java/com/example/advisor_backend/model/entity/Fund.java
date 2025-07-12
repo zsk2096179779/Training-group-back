@@ -68,7 +68,7 @@ public class Fund {
     private Set<NavHistory> navHistory;
 
     @OneToMany(mappedBy = "fund", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<Holding> holdings;
+    private Set<FundHolding> fundHoldings;
 
     @OneToMany(mappedBy = "fund", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Attribution> attribution;

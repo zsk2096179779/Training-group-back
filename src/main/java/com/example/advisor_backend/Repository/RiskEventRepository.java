@@ -1,6 +1,6 @@
-package com.example.advisor_backend.Repository;
+package com.example.advisor_backend.repository;
 
-import com.example.advisor_backend.bean.RiskEvent;
+import com.example.advisor_backend.model.entity.RiskEvent;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

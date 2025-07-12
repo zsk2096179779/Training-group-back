@@ -28,7 +28,7 @@ public class FundServiceImpl implements FundService {
     private final LabelRepository             labelRepo;
     private final NavHistoryRepository        navHistoryRepo;
     private final FundStatsService            fundStatsService;
-    private final HoldingRepository           holdingRepo;
+    private final FundHoldingRepository holdingRepo;
     private final AttributionRepository       attributionRepo;
     private final AnnouncementRepository      announcementRepo;
 
@@ -36,7 +36,7 @@ public class FundServiceImpl implements FundService {
                            LabelRepository labelRepo,
                            NavHistoryRepository navHistoryRepo,
                            FundStatsService fundStatsService,
-                           HoldingRepository holdingRepo,
+                           FundHoldingRepository holdingRepo,
                            AttributionRepository attributionRepo,
                            AnnouncementRepository announcementRepo) {
         this.fundRepo           = fundRepo;

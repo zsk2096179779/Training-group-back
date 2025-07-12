@@ -40,4 +40,6 @@ public class FundController {
         return ApiResponse.ok(fundService.getProfile(code));
 
     }
+
+
 }

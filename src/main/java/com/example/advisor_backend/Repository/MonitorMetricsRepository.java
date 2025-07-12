@@ -1,8 +1,6 @@
-package com.example.advisor_backend.Repository;
+package com.example.advisor_backend.repository;
 
-import com.example.advisor_backend.bean.MonitorMetrics;
-import com.example.advisor_backend.bean.ProfitChart;
-import com.example.advisor_backend.bean.Strategy;
+import com.example.advisor_backend.model.entity.MonitorMetrics;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface MonitorMetricsRepository extends JpaRepository<MonitorMetrics, Integer> {

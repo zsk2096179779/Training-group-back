@@ -1,6 +1,9 @@
-package com.example.advisor_backend.Repository;
+package com.example.advisor_backend.repository;
 
-import com.example.advisor_backend.bean.Strategy;
+import com.example.advisor_backend.model.entity.Strategy;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
@@ -11,4 +14,6 @@ public interface StrategyRepository extends JpaRepository<Strategy, Integer> {
     List<Strategy> findByOwner(Integer ownerId);
     //通过Id查询
     Strategy findByid(Integer strategyId);
+
+    Page<Strategy> findAll(Specification<Strategy> spec, Pageable pageable);
 }
