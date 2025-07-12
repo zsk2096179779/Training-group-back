@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.advisor_backend.mapper.AccountMapper">
+
+    <!-- 查询账户列表，支持模糊搜索 -->
+    <select id="findAccountListBySearch" resultType="com.example.advisor_backend.model.dto.AccountDTO">
+        SELECT
+            a.account_id AS accountId,
+            a.account_name AS accountName
+        FROM account a
+        WHERE a.account_name LIKE CONCAT('%', #{search}, '%')
+    </select>
+
+    <!-- 根据账户ID查询账户 -->
+    <select id="findAccountById" resultType="com.example.advisor_backend.model.dto.AccountDTO">
+        SELECT
+            a.account_id AS accountId,
+            a.account_name AS accountName
+        FROM account a
+        WHERE a.account_id = #{accountId}
+    </select>
+
+</mapper>

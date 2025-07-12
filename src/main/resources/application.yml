@@ -1,0 +1,36 @@
+server:
+  port: 8080
+
+spring:
+
+  datasource:
+    url: jdbc:mysql://localhost:3306/trainingdb?allowPublicKeyRetrieval=true&useSSL=false&serverTimezone=Asia/Shanghai
+    username: root       # 请改为你的用户名
+    password: 20050226       # 请改为你的密码
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: update      # 开发阶段使用 update 自动建表
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+        dialect: org.hibernate.dialect.MySQL8Dialect
+
+mybatis-plus:
+  configuration:
+    map-underscore-to-camel-case: true
+  type-aliases-package: com.example.advisor_backend.model.entity      # 实体类包别名，简化XML中的resultType
+
+mybatis:
+  mapper-locations: classpath:mapper/*.xml
+
+jwt:
+  secret: "Zm9SO3NmbWdVOEp4cG5GWVB2TzJvTUtIUVF2NXRqRngxRkY1Znl1amJBYW5BZDd5S1lqUjk1MjZ0ZWlKMnZ2djN6YlRkc2J6bEZYaUFUYzRaZWlBPT0="
+  expiration: 604800000
+
+logging:
+  level:
+    root: INFO
+    com.yourorg: DEBUG

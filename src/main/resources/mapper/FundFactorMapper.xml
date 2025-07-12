@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 命名空间保持不变 -->
+<mapper namespace="com.example.advisor_backend.mapper.FundFactorMapper">
+
+    <!-- 结果集映射，type 改为通用实体类 -->
+    <resultMap id="BaseResultMap" type="com.example.advisor_backend.model.entity.FundFactor">
+        <id property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="code" column="code"/>
+        <result property="category" column="category"/>
+        <result property="description" column="description"/>
+        <result property="type" column="type"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+    </resultMap>
+
+    <!-- ======================================================== -->
+    <!--  1. 您已有的查询 (全部保留，仅修改表名和返回类型)        -->
+    <!-- ======================================================== -->
+
+    <select id="selectByIds" resultMap="BaseResultMap">
+        <!-- 表名从 fund_factor 改为 factors -->
+        SELECT * FROM fund_factor WHERE id IN
+        <foreach collection="ids" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </select>
+
+    <select id="selectByNodeId" parameterType="long" resultMap="BaseResultMap">
+        <!-- 表名从 fund_factor 改为 factors -->
+        SELECT f.*
+        FROM fund_factor f
+        JOIN node_factor_relation nfr ON f.id = nfr.factor_id
+        WHERE nfr.node_id = #{nodeId}
+    </select>
+
+    <select id="selectAll" resultMap="BaseResultMap">
+        SELECT * FROM fund_factor
+    </select>
+
+    <select id="selectById" resultMap="BaseResultMap" parameterType="long">
+        SELECT * FROM fund_factor WHERE id = #{id}
+    </select>
+
+    <!-- ======================================================== -->
+    <!--  2. 新增和修改的功能 (适配衍生因子)                      -->
+    <!-- ======================================================== -->
+
+    <!-- 【修改】插入因子，适配新的DTO和表结构，并返回主键ID -->
+
+    <insert id="insert" parameterType="com.example.advisor_backend.model.entity.FundFactor" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO fund_factor(name, code, category, description, type, create_time, update_time)
+        VALUES (#{name}, #{code}, #{category}, #{description}, #{type}, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)
+    </insert>
+    <!-- 【新增】批量插入衍生因子的成分 -->
+    <insert id="insertBaseFactors">
+        INSERT INTO derived_factor_relation (derived_factor_id, base_factor_id, weight)
+        VALUES
+        <foreach collection="list" item="item" separator=",">
+            (#{derivedFactorId}, #{item.baseFactorId}, #{item.weight})
+        </foreach>
+    </insert>
+
+    <!-- 【新增】根据衍生因子ID删除其所有成分（用于更新操作） -->
+    <delete id="deleteBaseFactorsByDerivedId" parameterType="long">
+        DELETE FROM derived_factor_relation WHERE derived_factor_id = #{id};
+    </delete>
+
+    <!-- 【修改】更新因子，适配新的DTO -->
+    <update id="update" parameterType="com.example.advisor_backend.model.entity.FundFactor">
+        UPDATE fund_factor
+        SET name = #{name},
+            code = #{code},
+            category = #{category},
+            description = #{description},
+            update_time = CURRENT_TIMESTAMP
+        WHERE id = #{id}
+    </update>
+
+    <delete id="deleteById" parameterType="long">
+        DELETE FROM fund_factor WHERE id = #{id}
+    </delete>
+
+    <!-- ======================================================== -->
+    <!--  3. 【新增】专门用于获取普通因子的查询                   -->
+    <!-- ======================================================== -->
+
+    <select id="selectNormalFactors" resultMap="BaseResultMap">
+        SELECT * FROM fund_factor WHERE type = '普通'
+    </select>
+
+</mapper>

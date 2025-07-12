@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.advisor_backend.mapper.OrderMapper">
+
+    <!-- 分页查询结果映射 -->
+    <resultMap id="orderResponseMap"
+               type="com.example.advisor_backend.model.dto.OrderResponseDTO">
+        <id     column="id"         property="id"/>
+        <result column="accountId"  property="accountId"/>
+        <result column="fundId"     property="fundId"/>
+        <result column="status"     property="status"/>
+        <result column="oldRatio"   property="oldRatio"/>
+        <result column="newRatio"   property="newRatio"/>
+    </resultMap>
+
+    <!-- 分页查询 -->
+    <select id="toFinList"
+            parameterType="com.example.advisor_backend.model.dto.OrderRequestDTO"
+            resultMap="orderResponseMap">
+        SELECT
+        o.id,
+        o.account_id  AS accountId,
+        o.fund_id     AS fundId,
+        o.status      AS status
+        FROM orders o
+        <where>
+            <if test="type != null and type != ''">
+                AND o.type = #{type}
+            </if>
+            <if test="strategyId != null">
+                AND o.strategy_id = #{strategyId}
+            </if>
+        </where>
+        ORDER BY o.create_time DESC
+        LIMIT #{offset}, #{limit}
+    </select>
+
+    <!-- 用于分页总数 -->
+    <select id="countByCondition"
+            parameterType="com.example.advisor_backend.model.dto.OrderRequestDTO"
+            resultType="long">
+        SELECT COUNT(1)
+        FROM orders o
+        <where>
+            <if test="type != null and type != ''">
+                AND o.type = #{type}
+            </if>
+            <if test="strategyId != null">
+                AND o.strategy_id = #{strategyId}
+            </if>
+        </where>
+    </select>
+
+    <!-- 批量插入：DTO → Entity -->
+    <insert id="toEntityList"
+            parameterType="java.util.List"
+            useGeneratedKeys="true"
+            keyProperty="id">
+        INSERT INTO orders
+        (account_id, fund_id, old_ratio, new_ratio, status)
+        VALUES
+        <foreach collection="list" item="item" separator=",">
+            (
+            #{item.accountId},
+            #{item.fundId},
+            #{item.oldRatio},
+            #{item.newRatio},
+            #{item.status}
+            )
+        </foreach>
+    </insert>
+
+    <!-- 批量 Entity → DTO（可选） -->
+    <select id="toDtoList"
+            parameterType="java.util.List"
+            resultMap="orderResponseMap">
+        SELECT
+        o.id,
+        o.account_id  AS accountId,
+        o.fund_id     AS fundId,
+        o.status      AS status
+        FROM orders o
+        WHERE o.id IN
+        <foreach collection="list" item="e" open="(" close=")" separator=",">
+            #{e.id}
+        </foreach>
+    </select>
+
+</mapper>
