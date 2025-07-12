@@ -98,6 +98,11 @@ public class SecurityConfig {
                                 "/api/strategy-management/**",
                                 "/api/strategy-rebalance/**",
                                 "/api/trading/**",
+                                "/api/trading/error/replace",
+                                "/api/trading/errors/fix",
+                                "/api/trading/orders/**",
+                                "/api/trading/account-rebalance/**",
+                                "/api/trading/fund-research/**",
                                 "/api/auth/**",
                                 "/api/combos/**",
                                 "/api/datasource/**",
@@ -122,7 +127,7 @@ public class SecurityConfig {
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration cfg = new CorsConfiguration();
         // 开发时方便调试，允许所有域
-        cfg.setAllowedOriginPatterns(List.of("http://localhost:5173"));
+        cfg.setAllowedOrigins(List.of("http://localhost:5173"));
         cfg.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         cfg.setAllowedHeaders(List.of("*"));
         cfg.setAllowCredentials(true);

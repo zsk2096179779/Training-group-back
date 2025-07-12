@@ -23,9 +23,7 @@
         o.id,
         o.account_id  AS accountId,
         o.fund_id     AS fundId,
-        o.status      AS status,
-        o.old_ratio   AS oldRatio,
-        o.new_ratio   AS newRatio
+        o.status      AS status
         FROM orders o
         <where>
             <if test="type != null and type != ''">
@@ -82,9 +80,7 @@
         o.id,
         o.account_id  AS accountId,
         o.fund_id     AS fundId,
-        o.status      AS status,
-        o.old_ratio   AS oldRatio,
-        o.new_ratio   AS newRatio
+        o.status      AS status
         FROM orders o
         WHERE o.id IN
         <foreach collection="list" item="e" open="(" close=")" separator=",">

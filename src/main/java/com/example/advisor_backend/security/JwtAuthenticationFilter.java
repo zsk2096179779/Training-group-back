@@ -2,6 +2,8 @@
 package com.example.advisor_backend.security;
 
 import com.example.advisor_backend.service.CustomUserDetailsService;
+import org.mybatis.logging.Logger;
+import org.mybatis.logging.LoggerFactory;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -17,6 +19,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private final JwtTokenProvider tokenProvider;
     private final CustomUserDetailsService userDetailsService;
 
+
     public JwtAuthenticationFilter(JwtTokenProvider tokenProvider,
                                    CustomUserDetailsService userDetailsService) {
         this.tokenProvider = tokenProvider;
@@ -28,6 +31,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                                     HttpServletResponse response,
                                     FilterChain chain)
             throws ServletException, IOException {
+        logger.info("Processing JWT filter for request: {}");
+
         String header = request.getHeader("Authorization");
         logger.info("【JWT Filter】请求路径：" + request.getRequestURI() + "，Authorization-header=" + header);
         // …下面继续原来的校验逻辑…

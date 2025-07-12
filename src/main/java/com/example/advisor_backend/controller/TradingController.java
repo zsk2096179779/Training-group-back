@@ -19,8 +19,8 @@ public class TradingController {
     public ResponseEntity<PageResult<OrderResponseDTO>> listOrders(
             @RequestParam int page,
             @RequestParam int size,
-            @RequestParam(required = false) String status,
-            @RequestParam(required = false) Long strategyId
+            @RequestParam(name = "page",required = false) String status,
+            @RequestParam(name = "size",required = false) Long strategyId
     ) {
         PageResult<OrderResponseDTO> result = tradingService.listOrders(page, size, status, strategyId);
         return ResponseEntity.ok(result);
@@ -40,7 +40,7 @@ public class TradingController {
 
     @GetMapping("/orders/errors")
     public ResponseEntity<PageResult<OrderResponseDTO>> fetchErrorOrders(
-            @RequestParam String type,
+            @RequestParam (required = false, defaultValue = "error") String type,
             @RequestParam int page,
             @RequestParam int limit
     ) {
@@ -110,7 +110,7 @@ public class TradingController {
     }
 
     @GetMapping("/account-rebalance/accounts")
-    public ResponseEntity<List<AccountDTO>> fetchAccountList(@RequestParam String search) {
+    public ResponseEntity<List<AccountDTO>> fetchAccountList(@RequestParam(defaultValue = "")  String search) {
         List<AccountDTO> result = tradingService.fetchAccountList(search);
         return ResponseEntity.ok(result);
     }

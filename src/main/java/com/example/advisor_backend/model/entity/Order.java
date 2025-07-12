@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 
 @Entity
 @Getter @Setter
-@Table(name = "t_orders")
+@Table(name = "orders")
 public class Order {
     @Id
     @GeneratedValue
@@ -20,6 +20,12 @@ public class Order {
     private String fundCode;
     private Double amount;
     private String status;
-    private LocalDateTime createdAt;
-    // getters/setters...
+    private Double oldRatio;
+    private Double newRatio;
+    private LocalDateTime createTime;
+    private String type;
+
+    // 新增字段，确保与数据库列一致
+    private Long account_Id;  // 对应 account_id
+    private Long fund_Id;     // 对应 fund_id
 }
